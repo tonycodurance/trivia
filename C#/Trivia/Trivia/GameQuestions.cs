@@ -20,19 +20,23 @@ namespace Trivia
             var scienceQuestions = new LinkedList<string>();
             var sportsQuestions = new LinkedList<string>();
             var rockQuestions = new LinkedList<string>();
+            var geographyQuestions = new LinkedList<string>();
             for (var i = 0; i < 50; i++)
             {
                 popQuestions.AddLast("Pop Question " + i);
                 scienceQuestions.AddLast(("Science Question " + i));
                 sportsQuestions.AddLast(("Sports Question " + i));
                 rockQuestions.AddLast("Rock Question " + i);
+                geographyQuestions.AddLast("Geography Question " + i);
             }
+
             _questionsForCategory = new Dictionary<Category, LinkedList<string>>
             {
                 {Pop, popQuestions},
                 {Science, scienceQuestions},
                 {Sports, sportsQuestions},
-                {Rock, rockQuestions}
+                {Rock, rockQuestions},
+                {Geography, geographyQuestions}
             };
         }
        

@@ -34,7 +34,7 @@ namespace Trivia
                 {Two, Sports},
                 {Six, Sports},
                 {Ten, Sports},
-                {Three, Rock},
+                {Three, Geography},
                 {Seven, Rock},
                 {Eleven, Rock}
             };

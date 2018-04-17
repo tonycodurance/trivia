@@ -15,7 +15,7 @@ namespace TriviaTests
         [TestCase(Zero, Pop)]
         [TestCase(One, Science)]
         [TestCase(Two, Sports)]
-        [TestCase(Three, Rock)]
+        [TestCase(Three, Geography)]
         [TestCase(Four, Pop)]
         [TestCase(Five, Science)]
         [TestCase(Six, Sports)]

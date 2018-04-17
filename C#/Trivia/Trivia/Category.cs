@@ -2,6 +2,7 @@
 {
     public enum Category
     {
-        Pop, Science, Sports, Rock
+        Pop, Science, Sports, Rock,
+        Geography
     }
 }

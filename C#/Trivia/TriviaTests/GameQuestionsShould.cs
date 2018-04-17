@@ -36,6 +36,7 @@ namespace TriviaTests
         [TestCase(Science)]
         [TestCase(Sports)]
         [TestCase(Rock)]
+        [TestCase(Geography)]
         public void CreateAtLeast50SimplifiedQuestionsForEachCategory(Category category)
         {
             const int expectedNumberOfQuestions = 50;
