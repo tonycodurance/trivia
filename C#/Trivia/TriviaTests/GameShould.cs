@@ -30,28 +30,6 @@ namespace TriviaTests
             
             Assert.That(categoryForPlayer, Is.EqualTo(expectedCategory));
         }
-
-        [TestCase(Pop)]
-        [TestCase(Sports)]
-        [TestCase(Science)]
-        [TestCase(Rock)]
-        public void AskQuestionForGivenCategory(Category category)
-        {
-            var game = new Game();
-            var stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-            Console.SetError(stringWriter);
-            var questions = new LinkedList<string>();
-            questions.AddLast("expectedQuestion");
-            
-            game.AskQuestion(category, new Dictionary<Category, LinkedList<string>>
-            {
-                {category, questions},
-            });
-            var actualQuestion = stringWriter.ToString();
-
-            Assert.That(actualQuestion, Is.EqualTo("expectedQuestion\n"));
-        }
     }
 
 }

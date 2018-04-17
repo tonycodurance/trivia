@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using static Trivia.Category;
 using static Trivia.Location;
 
@@ -11,35 +10,36 @@ namespace Trivia
         private readonly Players _players = new Players();
 
         private readonly int[] _location = new int[6];
+
         private readonly int[] _purses = new int[6];
 
         private readonly bool[] _inPenaltyBox = new bool[6];
 
         private int _currentPlayer = 0;
-        private bool _isGettingOutOfPenaltyBox;
-        private readonly Dictionary<Category, LinkedList<string>> _questionsForCategory;
 
-        public Game()
+        private bool _isGettingOutOfPenaltyBox;
+
+        private readonly GameQuestions _gameQuestions = new GameQuestions();
+
+        public static Category GiveCategoryFor(Location playerLocation)
         {
-            var popQuestions = new LinkedList<string>();
-            var scienceQuestions = new LinkedList<string>();
-            var sportsQuestions = new LinkedList<string>();
-            var rockQuestions = new LinkedList<string>();
-            for (var i = 0; i < 50; i++)
+            var categoryForLocation = new Dictionary<Location, Category>
             {
-                popQuestions.AddLast("Pop Question " + i);
-                scienceQuestions.AddLast(("Science Question " + i));
-                sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast("Rock Question " + i);
-            }
-            
-            _questionsForCategory = new Dictionary<Category, LinkedList<string>>
-            {
-                {Pop, popQuestions},
-                {Science, scienceQuestions},
-                {Sports, sportsQuestions},
-                {Rock, rockQuestions}
-            };   
+                {Zero, Pop},
+                {Four, Pop},
+                {Eight, Pop},
+                {One, Science},
+                {Five, Science},
+                {Nine, Science},
+                {Two, Sports},
+                {Six, Sports},
+                {Ten, Sports},
+                {Three, Rock},
+                {Seven, Rock},
+                {Eleven, Rock}
+            };
+
+            return categoryForLocation[playerLocation];
         }
 
         public bool add(string playerName)
@@ -71,8 +71,8 @@ namespace Trivia
                     
                     Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                     Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
-                    
-                    AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]), _questionsForCategory);
+
+                    _gameQuestions.AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
                 }
                 
                 if (!RolledOdd(roll))
@@ -88,30 +88,9 @@ namespace Trivia
 
                 Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                 Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
-                AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]), _questionsForCategory);
+                _gameQuestions.AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
             }
 
-        }
-
-        public static Category GiveCategoryFor(Location playerLocation)
-        {
-            var categoryForLocation = new Dictionary<Location, Category>
-            {
-                {Zero, Pop},
-                {Four, Pop},
-                {Eight, Pop},
-                {One, Science},
-                {Five, Science},
-                {Nine, Science},
-                {Two, Sports},
-                {Six, Sports},
-                {Ten, Sports},
-                {Three, Rock},
-                {Seven, Rock},
-                {Eleven, Rock}
-            };
-
-            return categoryForLocation[playerLocation];
         }
 
         public bool AnsweredCorrectly()
@@ -178,12 +157,6 @@ namespace Trivia
         private bool CurrentPlayerInPenaltyBox()
         {
             return _inPenaltyBox[_currentPlayer];
-        }
-
-        public void AskQuestion(Category category, Dictionary<Category, LinkedList<string>> questionsForCategory)
-        {
-            Console.WriteLine(questionsForCategory[category].First());
-            questionsForCategory[category].RemoveFirst();
         }
 
         private void GiveCoinToCurrentPlayer()
