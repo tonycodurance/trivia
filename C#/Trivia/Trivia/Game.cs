@@ -15,23 +15,31 @@ namespace Trivia
 
         private readonly bool[] _inPenaltyBox = new bool[6];
 
-        private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
-
         private int _currentPlayer = 0;
         private bool _isGettingOutOfPenaltyBox;
+        private readonly Dictionary<Category, LinkedList<string>> _questionsForCategory;
 
         public Game()
         {
+            var popQuestions = new LinkedList<string>();
+            var scienceQuestions = new LinkedList<string>();
+            var sportsQuestions = new LinkedList<string>();
+            var rockQuestions = new LinkedList<string>();
             for (var i = 0; i < 50; i++)
             {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast(("Science Question " + i));
-                _sportsQuestions.AddLast(("Sports Question " + i));
-                _rockQuestions.AddLast("Rock Question " + i);
+                popQuestions.AddLast("Pop Question " + i);
+                scienceQuestions.AddLast(("Science Question " + i));
+                sportsQuestions.AddLast(("Sports Question " + i));
+                rockQuestions.AddLast("Rock Question " + i);
             }
+            
+            _questionsForCategory = new Dictionary<Category, LinkedList<string>>
+            {
+                {Pop, popQuestions},
+                {Science, scienceQuestions},
+                {Sports, sportsQuestions},
+                {Rock, rockQuestions}
+            };   
         }
 
         public bool add(string playerName)
@@ -64,7 +72,7 @@ namespace Trivia
                     Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                     Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
                     
-                    AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
+                    AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]), _questionsForCategory);
                 }
                 
                 if (!RolledOdd(roll))
@@ -80,7 +88,7 @@ namespace Trivia
 
                 Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                 Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
-                AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
+                AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]), _questionsForCategory);
             }
 
         }
@@ -172,16 +180,8 @@ namespace Trivia
             return _inPenaltyBox[_currentPlayer];
         }
 
-        public void AskQuestion(Category category)
+        public void AskQuestion(Category category, Dictionary<Category, LinkedList<string>> questionsForCategory)
         {
-            var questionsForCategory = new Dictionary<Category, LinkedList<string>>
-            {
-                {Pop, _popQuestions},
-                {Science, _scienceQuestions},
-                {Sports, _sportsQuestions},
-                {Rock, _rockQuestions}
-            };
-
             Console.WriteLine(questionsForCategory[category].First());
             questionsForCategory[category].RemoveFirst();
         }

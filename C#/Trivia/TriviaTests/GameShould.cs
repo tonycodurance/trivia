@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Moq;
 using NUnit.Framework;
@@ -30,21 +31,26 @@ namespace TriviaTests
             Assert.That(categoryForPlayer, Is.EqualTo(expectedCategory));
         }
 
-        [TestCase(Pop, "Pop Question 0\n")]
-        [TestCase(Sports, "Sports Question 0\n")]
-        [TestCase(Science, "Science Question 0\n")]
-        [TestCase(Rock, "Rock Question 0\n")]
-        public void AskQuestionForGivenCategory(Category category, string expectedQuestion)
+        [TestCase(Pop)]
+        [TestCase(Sports)]
+        [TestCase(Science)]
+        [TestCase(Rock)]
+        public void AskQuestionForGivenCategory(Category category)
         {
             var game = new Game();
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
             Console.SetError(stringWriter);
+            var questions = new LinkedList<string>();
+            questions.AddLast("expectedQuestion");
             
-            game.AskQuestion(category);
+            game.AskQuestion(category, new Dictionary<Category, LinkedList<string>>
+            {
+                {category, questions},
+            });
             var actualQuestion = stringWriter.ToString();
 
-            Assert.That(actualQuestion, Is.EqualTo(expectedQuestion));
+            Assert.That(actualQuestion, Is.EqualTo("expectedQuestion\n"));
         }
     }
 
