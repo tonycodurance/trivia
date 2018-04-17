@@ -20,13 +20,13 @@ namespace TriviaTests
         [TestCase(Nine, Science)]
         [TestCase(Ten, Sports)]
         [TestCase(Eleven, Rock)]
-        public void SetCurrentCategory(Location currentPlayerLocation, Category category)
+        public void GiveCategoryForGivenPlayerLocation(Location playerLocation, Category expectedCategory)
         {
             var game = new Game();
 
-            var currentCategory = game.CurrentCategory(currentPlayerLocation);
+            var categoryForPlayer = Game.GiveCategoryFor(playerLocation);
             
-            Assert.That(currentCategory, Is.EqualTo(category));
+            Assert.That(expectedCategory, Is.EqualTo(categoryForPlayer));
         }
     }
 }

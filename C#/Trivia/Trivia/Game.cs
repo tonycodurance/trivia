@@ -62,7 +62,7 @@ namespace Trivia
                     MovePlayer(roll);
                     
                     Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
-                    Console.WriteLine("The category is " + CurrentCategory((Location)_location[_currentPlayer]));
+                    Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
                     
                     AskQuestion();
                 }
@@ -79,13 +79,13 @@ namespace Trivia
                 MovePlayer(roll);
 
                 Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
-                Console.WriteLine("The category is " + CurrentCategory((Location)_location[_currentPlayer]));
+                Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
                 AskQuestion();
             }
 
         }
 
-        public Category CurrentCategory(Location currentPlayerLocation)
+        public static Category GiveCategoryFor(Location playerLocation)
         {
             var categoryForLocation = new Dictionary<Location, Category>
             {
@@ -103,7 +103,7 @@ namespace Trivia
                 {Eleven, Rock}
             };
 
-            return categoryForLocation[currentPlayerLocation];
+            return categoryForLocation[playerLocation];
         }
 
         public bool AnsweredCorrectly()
@@ -194,7 +194,7 @@ namespace Trivia
 
         private bool CurrentCategoryIs(Category category)
         {
-            return CurrentCategory((Location)_location[_currentPlayer]) == category;
+            return GiveCategoryFor((Location)_location[_currentPlayer]) == category;
         }
 
         private void AskRockQuestion()
