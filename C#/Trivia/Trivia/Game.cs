@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Trivia.Category;
 using static Trivia.Location;
 
 namespace Trivia
@@ -45,11 +46,6 @@ namespace Trivia
             return true;
         }
 
-        private int HowManyPlayers()
-        {
-            return _players.Count;
-        }
-
         public void roll(int roll)
         {
             Console.WriteLine(_players[_currentPlayer] + " is the current player");
@@ -65,12 +61,9 @@ namespace Trivia
                     
                     MovePlayer(roll);
                     
-                    if (_location[_currentPlayer] > 11) _location[_currentPlayer] = _location[_currentPlayer] - 12;
-
-                    Console.WriteLine(_players[_currentPlayer]
-                            + "'s new location is "
-                            + _location[_currentPlayer]);
+                    Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                     Console.WriteLine("The category is " + CurrentCategory((Location)_location[_currentPlayer]));
+                    
                     AskQuestion();
                 }
                 
@@ -84,20 +77,89 @@ namespace Trivia
             if (!CurrentPlayerInPenaltyBox())
             {
                 MovePlayer(roll);
-                if (_location[_currentPlayer] > 11) _location[_currentPlayer] = _location[_currentPlayer] - 12;
 
-                Console.WriteLine(_players[_currentPlayer]
-                        + "'s new location is "
-                        + _location[_currentPlayer]);
+                Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                 Console.WriteLine("The category is " + CurrentCategory((Location)_location[_currentPlayer]));
                 AskQuestion();
             }
 
         }
 
+        public Category CurrentCategory(Location currentPlayerLocation)
+        {
+            var categoryForLocation = new Dictionary<Location, Category>
+            {
+                {Zero, Pop},
+                {Four, Pop},
+                {Eight, Pop},
+                {One, Science},
+                {Five, Science},
+                {Nine, Science},
+                {Two, Sports},
+                {Six, Sports},
+                {Ten, Sports},
+                {Three, Rock},
+                {Seven, Rock},
+                {Eleven, Rock}
+            };
+
+            return categoryForLocation[currentPlayerLocation];
+        }
+
+        public bool AnsweredCorrectly()
+        {
+            if (CurrentPlayerInPenaltyBox())
+            {
+                if (_isGettingOutOfPenaltyBox)
+                {
+                    Console.WriteLine("Answer was correct!!!!");
+                    
+                    GiveCoinToCurrentPlayer();
+                    
+                    Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
+
+                    var currentPlayerNoWinner = !CurrentPlayerWinner();
+                    
+                    SetNextPlayer();
+                    
+                    ResetPlayerIfLast();
+                    
+                    return currentPlayerNoWinner;
+                }
+
+                SetNextPlayer();
+                    
+                ResetPlayerIfLast();
+                return true;
+            }
+
+            Console.WriteLine("Answer was corrent!!!!");
+            GiveCoinToCurrentPlayer();
+            Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
+
+            var currentPlayerIsNoWinner = !CurrentPlayerWinner();
+                
+            SetNextPlayer();
+                
+            ResetPlayerIfLast();
+
+            return currentPlayerIsNoWinner;
+        }
+
+        private int HowManyPlayers()
+        {
+            return _players.Count;
+        }
+
+        private void CheckPlayerLocationWithinBoundaries()
+        {
+            if (_location[_currentPlayer] > 11) _location[_currentPlayer] = _location[_currentPlayer] - 12;
+        }
+
         private void MovePlayer(int roll)
         {
             _location[_currentPlayer] = _location[_currentPlayer] + roll;
+            CheckPlayerLocationWithinBoundaries();
         }
 
         private static bool RolledOdd(int roll)
@@ -112,86 +174,51 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            if (CurrentCategory((Location)_location[_currentPlayer]) == "Pop")
+            if (CurrentCategoryIs(Pop))
             {
-                Console.WriteLine(_popQuestions.First());
-                _popQuestions.RemoveFirst();
+                AskPopQuestion();
             }
-            if (CurrentCategory((Location)_location[_currentPlayer]) == "Science")
+            if (CurrentCategoryIs(Science))
             {
-                Console.WriteLine(_scienceQuestions.First());
-                _scienceQuestions.RemoveFirst();
+                AskScienceQuestion();
             }
-            if (CurrentCategory((Location)_location[_currentPlayer]) == "Sports")
+            if (CurrentCategoryIs(Sports))
             {
-                Console.WriteLine(_sportsQuestions.First());
-                _sportsQuestions.RemoveFirst();
+                AskSportsQuestion();
             }
-            if (CurrentCategory((Location)_location[_currentPlayer]) == "Rock")
+            if (CurrentCategoryIs(Rock))
             {
-                Console.WriteLine(_rockQuestions.First());
-                _rockQuestions.RemoveFirst();
+                AskRockQuestion();
             }
         }
 
-        public string CurrentCategory(Location currentPlayerLocation)
+        private bool CurrentCategoryIs(Category category)
         {
-            if (currentPlayerLocation == Zero) return "Pop";
-            if (currentPlayerLocation == Four) return "Pop";
-            if (currentPlayerLocation == Eight) return "Pop";
-            if (currentPlayerLocation == One) return "Science";
-            if (currentPlayerLocation == Five) return "Science";
-            if (currentPlayerLocation == Nine) return "Science";
-            if (currentPlayerLocation == Two) return "Sports";
-            if (currentPlayerLocation == Six) return "Sports";
-            if (currentPlayerLocation == Ten) return "Sports";
-            return "Rock";
+            return CurrentCategory((Location)_location[_currentPlayer]) == category;
         }
 
-        public bool AnsweredCorrectly()
+        private void AskRockQuestion()
         {
-            if (CurrentPlayerInPenaltyBox())
-            {
-                if (_isGettingOutOfPenaltyBox)
-                {
-                    Console.WriteLine("Answer was correct!!!!");
-                    
-                    GiveCoinToCurrentPlayer();
-                    
-                    Console.WriteLine(_players[_currentPlayer]
-                            + " now has "
-                            + _purses[_currentPlayer]
-                            + " Gold Coins.");
+            Console.WriteLine(_rockQuestions.First());
+            _rockQuestions.RemoveFirst();
+        }
 
-                    var winner = CurrentPlayerIsNoWinner();
-                    
-                    SetNextPlayer();
-                    
-                    ResetPlayerIfLast();
-                    
-                    return winner;
-                }
+        private void AskSportsQuestion()
+        {
+            Console.WriteLine(_sportsQuestions.First());
+            _sportsQuestions.RemoveFirst();
+        }
 
-                SetNextPlayer();
-                    
-                ResetPlayerIfLast();
-                return true;
-            }
+        private void AskScienceQuestion()
+        {
+            Console.WriteLine(_scienceQuestions.First());
+            _scienceQuestions.RemoveFirst();
+        }
 
-            Console.WriteLine("Answer was corrent!!!!");
-            GiveCoinToCurrentPlayer();
-            Console.WriteLine(_players[_currentPlayer]
-                              + " now has "
-                              + _purses[_currentPlayer]
-                              + " Gold Coins.");
-
-            var currentPlayerIsNoWinner = CurrentPlayerIsNoWinner();
-                
-            SetNextPlayer();
-                
-            ResetPlayerIfLast();
-
-            return currentPlayerIsNoWinner;
+        private void AskPopQuestion()
+        {
+            Console.WriteLine(_popQuestions.First());
+            _popQuestions.RemoveFirst();
         }
 
         private void GiveCoinToCurrentPlayer()
@@ -228,15 +255,14 @@ namespace Trivia
             _currentPlayer++;
         }
 
-        private bool CurrentPlayerIsNoWinner()
+        private bool CurrentPlayerWinner()
         {
-            return _purses[_currentPlayer] != 6;
+            return _purses[_currentPlayer] == 6;
         }
     }
 
     public enum Location
     {
-        Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten,
-        Eleven
+        Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven
     }
 }
