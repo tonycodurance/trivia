@@ -64,7 +64,7 @@ namespace Trivia
                     Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                     Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
                     
-                    AskQuestion();
+                    AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
                 }
                 
                 if (!RolledOdd(roll))
@@ -80,7 +80,7 @@ namespace Trivia
 
                 Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
                 Console.WriteLine("The category is " + GiveCategoryFor((Location)_location[_currentPlayer]));
-                AskQuestion();
+                AskQuestion(GiveCategoryFor((Location)_location[_currentPlayer]));
             }
 
         }
@@ -172,29 +172,17 @@ namespace Trivia
             return _inPenaltyBox[_currentPlayer];
         }
 
-        public void AskQuestion()
+        public void AskQuestion(Category category)
         {
-            if (CurrentCategoryIs(Pop))
+            var questionsForCategory = new Dictionary<Category, Action>
             {
-                AskPopQuestion();
-            }
-            if (CurrentCategoryIs(Science))
-            {
-                AskScienceQuestion();
-            }
-            if (CurrentCategoryIs(Sports))
-            {
-                AskSportsQuestion();
-            }
-            if (CurrentCategoryIs(Rock))
-            {
-                AskRockQuestion();
-            }
-        }
+                {Pop, AskPopQuestion},
+                {Science, AskScienceQuestion},
+                {Sports, AskSportsQuestion},
+                {Rock, AskRockQuestion}
+            };
 
-        public virtual bool CurrentCategoryIs(Category category)
-        {
-            return GiveCategoryFor((Location)_location[_currentPlayer]) == category;
+            questionsForCategory[category]();
         }
 
         private void AskRockQuestion()

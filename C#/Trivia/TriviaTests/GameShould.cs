@@ -36,31 +36,16 @@ namespace TriviaTests
         [TestCase(Rock, "Rock Question 0\n")]
         public void AskQuestionForGivenCategory(Category category, string expectedQuestion)
         {
-            var game = new TestGame(category);
-            
+            var game = new Game();
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
             Console.SetError(stringWriter);
             
-            game.AskQuestion();
+            game.AskQuestion(category);
             var actualQuestion = stringWriter.ToString();
 
             Assert.That(actualQuestion, Is.EqualTo(expectedQuestion));
         }
     }
 
-    public class TestGame : Game
-    {
-        private readonly Category _category;
-
-        public TestGame(Category category)
-        {
-            _category = category;
-        }
-
-        public override bool CurrentCategoryIs(Category category)
-        {
-            return _category == category;
-        }
-    }
 }
