@@ -172,7 +172,7 @@ namespace Trivia
             return _inPenaltyBox[_currentPlayer];
         }
 
-        private void AskQuestion()
+        public void AskQuestion()
         {
             if (CurrentCategoryIs(Pop))
             {
@@ -192,7 +192,7 @@ namespace Trivia
             }
         }
 
-        private bool CurrentCategoryIs(Category category)
+        public virtual bool CurrentCategoryIs(Category category)
         {
             return GiveCategoryFor((Location)_location[_currentPlayer]) == category;
         }
