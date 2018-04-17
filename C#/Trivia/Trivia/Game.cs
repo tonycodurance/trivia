@@ -174,21 +174,16 @@ namespace Trivia
 
         public void AskQuestion(Category category)
         {
-            var questionsForCategory = new Dictionary<Category, Action>
+            var questionsForCategory = new Dictionary<Category, LinkedList<string>>
             {
-                {Pop, () => AskQuestion(_popQuestions)},
-                {Science, () => AskQuestion(_scienceQuestions)},
-                {Sports, () => AskQuestion(_sportsQuestions)},
-                {Rock, () => AskQuestion(_rockQuestions)}
+                {Pop, _popQuestions},
+                {Science, _scienceQuestions},
+                {Sports, _sportsQuestions},
+                {Rock, _rockQuestions}
             };
 
-            questionsForCategory[category]();
-        }
-
-        private static void AskQuestion(LinkedList<string> popQuestions)
-        {
-            Console.WriteLine(popQuestions.First());
-            popQuestions.RemoveFirst();
+            Console.WriteLine(questionsForCategory[category].First());
+            questionsForCategory[category].RemoveFirst();
         }
 
         private void GiveCoinToCurrentPlayer()
