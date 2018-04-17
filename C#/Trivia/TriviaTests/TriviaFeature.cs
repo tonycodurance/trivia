@@ -29,7 +29,7 @@ namespace TriviaTests
 //            
 //            using (var tw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+$"GoldenMaster{goldeMasterFileId}.txt"), true))
 //            {
-//                tw.WriteLine(result);
+//                tw.Write(result);
 //            }
 //        }
 
