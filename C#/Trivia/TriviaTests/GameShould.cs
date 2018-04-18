@@ -26,5 +26,12 @@ namespace TriviaTests
 
             Assert.That(categoryForPlayer, Is.EqualTo(expectedCategory));
         }
+
+//        [Test]
+//        public void AskCurrentPlayerFromPlayers()
+//        {
+//            var actualPlayer = ;
+//            Assert.That(actualPlayer, Is.EqualTo(expectedPlayer));
+//        }
     }
 }

@@ -21,9 +21,11 @@ namespace Trivia
             _players.Add(player);
         }
 
-        public void SetToNextPlayer()
+        public int GetNextPlayer()
         {
             CurrentPlayerIndex = (CurrentPlayerIndex + 1) % _players.Count;
+            return CurrentPlayerIndex;
         }
+        
     }
 }

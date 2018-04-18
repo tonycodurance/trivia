@@ -66,7 +66,7 @@ namespace TriviaTests
             players.Add(firstPlayer);
             players.Add(secondPlayer);
 
-            players.SetToNextPlayer();
+            players.GetNextPlayer();
             
             Assert.That(players.CurrentPlayerIndex, Is.EqualTo(1));
         }
@@ -79,9 +79,9 @@ namespace TriviaTests
             var players = new Players();
             players.Add(firstPlayer);
             players.Add(secondPlayer);
-            players.SetToNextPlayer();
+            players.GetNextPlayer();
             
-            players.SetToNextPlayer();
+            players.GetNextPlayer();
             
             Assert.That(players.CurrentPlayerIndex, Is.EqualTo(0));
         }
