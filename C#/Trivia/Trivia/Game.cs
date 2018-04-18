@@ -13,8 +13,14 @@ namespace Trivia
         private readonly bool[] _inPenaltyBox = new bool[6];
         private int _currentPlayer = 0;
         private bool _isGettingOutOfPenaltyBox;
-        private readonly GameQuestions _gameQuestions = new GameQuestions();
-        private readonly GameCoinsWinningCondition _gameWinningCondition = new GameCoinsWinningCondition(6);
+        private readonly GameQuestions _gameQuestions;
+        private readonly GameCoinsWinningCondition _gameWinningCondition;
+
+        public Game()
+        {
+            _gameQuestions = new GameQuestions();
+            _gameWinningCondition = new GameCoinsWinningCondition(GameSettings.NumberOfCoins);
+        }
 
         public static Category GiveCategoryFor(Location playerLocation)
         {
