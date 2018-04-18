@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameCoinsWinningConditionShould.cs" />
     <Compile Include="GameQuestionsShould.cs" />
     <Compile Include="GameShould.cs" />
     <Compile Include="PlayersShould.cs" />
