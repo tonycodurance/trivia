@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using static Trivia.Category;
 using static Trivia.Location;
+using static Trivia.WinningConditions;
 
 namespace Trivia
 {
@@ -118,7 +119,7 @@ namespace Trivia
             GiveCoinToCurrentPlayer();
             Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
-            var currentPlayerIsNoWinner = !CurrentPlayerWinner(6);
+            var currentPlayerIsNoWinner = !CurrentPlayerWinner((int)WinningCoins);
                 
             SetNextPlayer();
                 
@@ -196,6 +197,11 @@ namespace Trivia
         {
             return _purses[_currentPlayer];
         }
+    }
+
+    public enum WinningConditions
+    {
+        WinningCoins = 6
     }
 
     public enum Location

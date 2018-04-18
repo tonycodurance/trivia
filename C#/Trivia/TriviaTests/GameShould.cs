@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Trivia;
 using static Trivia.Category;
 using static Trivia.Location;
@@ -31,14 +27,14 @@ namespace TriviaTests
             Assert.That(categoryForPlayer, Is.EqualTo(expectedCategory));
         }
 
-        [TestCase(6, 6, true)]
-        [TestCase(8, 7, false)]
-        [TestCase(100, 100, true)]
-        public void IdentifyWinningCondition(int numberOfCoinsToWin, int playerCoins, bool expectedPlayerIsWinner)
+        [TestCase(WinningConditions.WinningCoins, 6, true)]
+        [TestCase(WinningConditions.WinningCoins, 5, false)]
+        [TestCase(WinningConditions.WinningCoins, 1, false)]
+        public void IdentifyWinningCondition(WinningConditions numberOfCoinsToWin, int playerCoins, bool expectedPlayerIsWinner)
         {
             var game = new GameTest(playerCoins);
 
-            var actualPlayerIsWinner = game.CurrentPlayerWinner(numberOfCoinsToWin);
+            var actualPlayerIsWinner = game.CurrentPlayerWinner((int)numberOfCoinsToWin);
 
             Assert.That(actualPlayerIsWinner, Is.EqualTo(expectedPlayerIsWinner));
         }
