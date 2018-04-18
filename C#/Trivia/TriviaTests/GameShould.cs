@@ -30,6 +30,32 @@ namespace TriviaTests
             
             Assert.That(categoryForPlayer, Is.EqualTo(expectedCategory));
         }
-    }
 
+        [TestCase(6, true)]
+        [TestCase(7, false)]
+        [TestCase(100, false)]
+        public void IdentifyWinningCondition(int playerCoins, bool expectedPlayerIsWinner)
+        {
+            var game = new GameTest(playerCoins);
+
+            var actualPlayerIsWinner = game.CurrentPlayerWinner();
+            
+            Assert.That(actualPlayerIsWinner, Is.EqualTo(expectedPlayerIsWinner));
+        }
+    }
+    
+    public class GameTest : Game
+    {
+        private readonly int _playerCoins;
+
+        public GameTest(int playerCoins)
+        {
+            _playerCoins = playerCoins;
+        }
+
+        public override int GetCurrentPlayerCoins()
+        {
+            return _playerCoins;
+        }
+    }
 }

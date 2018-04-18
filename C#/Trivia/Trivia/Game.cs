@@ -187,9 +187,14 @@ namespace Trivia
             _currentPlayer++;
         }
 
-        private bool CurrentPlayerWinner()
+        public bool CurrentPlayerWinner()
         {
-            return _purses[_currentPlayer] == 6;
+            return GetCurrentPlayerCoins() == 6;
+        }
+
+        public virtual int GetCurrentPlayerCoins()
+        {
+            return _purses[_currentPlayer];
         }
     }
 
