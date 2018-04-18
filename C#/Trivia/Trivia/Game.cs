@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using static Trivia.Category;
 using static Trivia.Location;
-using static Trivia.WinningConditions;
 
 namespace Trivia
 {
@@ -15,6 +14,7 @@ namespace Trivia
         private int _currentPlayer = 0;
         private bool _isGettingOutOfPenaltyBox;
         private readonly GameQuestions _gameQuestions = new GameQuestions();
+        private readonly GameCoinsWinningCondition _gameWinningCondition = new GameCoinsWinningCondition();
 
         public static Category GiveCategoryFor(Location playerLocation)
         {
@@ -100,7 +100,7 @@ namespace Trivia
                     
                     Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
-                    var currentPlayerNoWinner = !CurrentPlayerWinner(6);
+                    var currentPlayerNoWinner = !_gameWinningCondition.CurrentPlayerWinner(_purses[_currentPlayer]);
                     
                     SetNextPlayer();
                     
@@ -119,7 +119,7 @@ namespace Trivia
             GiveCoinToCurrentPlayer();
             Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
-            var currentPlayerIsNoWinner = !CurrentPlayerWinner((int)WinningCoins);
+            var currentPlayerIsNoWinner = !_gameWinningCondition.CurrentPlayerWinner(_purses[_currentPlayer]);
                 
             SetNextPlayer();
                 
@@ -187,21 +187,6 @@ namespace Trivia
         {
             _currentPlayer++;
         }
-
-        public bool CurrentPlayerWinner(int numberOfCoinsToWin)
-        {
-            return GetCurrentPlayerCoins() == numberOfCoinsToWin;
-        }
-
-        public virtual int GetCurrentPlayerCoins()
-        {
-            return _purses[_currentPlayer];
-        }
-    }
-
-    public enum WinningConditions
-    {
-        WinningCoins = 6
     }
 
     public enum Location

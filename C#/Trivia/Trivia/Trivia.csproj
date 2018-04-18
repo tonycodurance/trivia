@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameCoinsWinningCondition.cs" />
     <Compile Include="GameQuestions.cs" />
     <Compile Include="GameRunner.cs" />
     <Compile Include="GameRunnerGoldenMaster.cs" />
