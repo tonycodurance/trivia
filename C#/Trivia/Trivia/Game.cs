@@ -39,8 +39,9 @@ namespace Trivia
 
         public bool add(string playerName)
         {
-            Player player = new Player(playerName);
-            _players.Add(playerName);
+            var player = new Player(playerName);
+            _players.Add(player);
+            
             _location[HowManyPlayers()] = 0;
             _purses[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
@@ -52,7 +53,7 @@ namespace Trivia
 
         public void roll(int roll)
         {
-            Console.WriteLine(_players[_currentPlayer] + " is the current player");
+            Console.WriteLine(_players[_currentPlayer].Name + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
             if (CurrentPlayerInPenaltyBox())
@@ -61,11 +62,11 @@ namespace Trivia
                 {
                     _isGettingOutOfPenaltyBox = true;
 
-                    Console.WriteLine(_players[_currentPlayer] + " is getting out of the penalty box");
+                    Console.WriteLine(_players[_currentPlayer].Name + " is getting out of the penalty box");
 
                     MovePlayer(roll);
 
-                    Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
+                    Console.WriteLine(_players[_currentPlayer].Name + "'s new location is " + _location[_currentPlayer]);
                     Console.WriteLine("The category is " + GiveCategoryFor((Location) _location[_currentPlayer]));
 
                     _gameQuestions.AskQuestion(GiveCategoryFor((Location) _location[_currentPlayer]));
@@ -73,7 +74,7 @@ namespace Trivia
 
                 if (!RolledOdd(roll))
                 {
-                    Console.WriteLine(_players[_currentPlayer] + " is not getting out of the penalty box");
+                    Console.WriteLine(_players[_currentPlayer].Name + " is not getting out of the penalty box");
                     _isGettingOutOfPenaltyBox = false;
                 }
             }
@@ -82,7 +83,7 @@ namespace Trivia
             {
                 MovePlayer(roll);
 
-                Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _location[_currentPlayer]);
+                Console.WriteLine(_players[_currentPlayer].Name + "'s new location is " + _location[_currentPlayer]);
                 Console.WriteLine("The category is " + GiveCategoryFor((Location) _location[_currentPlayer]));
                 _gameQuestions.AskQuestion(GiveCategoryFor((Location) _location[_currentPlayer]));
             }
@@ -98,33 +99,28 @@ namespace Trivia
 
                     GiveCoinToCurrentPlayer();
 
-                    Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] +
+                    Console.WriteLine(_players[_currentPlayer].Name + " now has " + _purses[_currentPlayer] +
                                       " Gold Coins.");
 
                     var currentPlayerNoWinner = !_gameWinningCondition.CurrentPlayerWinner(_purses[_currentPlayer]);
 
                     _currentPlayer = _players.GetNextPlayer();
 
-                    ResetPlayerIfLast();
-
                     return currentPlayerNoWinner;
                 }
 
                 _currentPlayer = _players.GetNextPlayer();
 
-                ResetPlayerIfLast();
                 return true;
             }
 
             Console.WriteLine("Answer was corrent!!!!");
             GiveCoinToCurrentPlayer();
-            Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
+            Console.WriteLine(_players[_currentPlayer].Name + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
             var currentPlayerIsNoWinner = !_gameWinningCondition.CurrentPlayerWinner(_purses[_currentPlayer]);
 
             _currentPlayer = _players.GetNextPlayer();
-
-            ResetPlayerIfLast();
 
             return currentPlayerIsNoWinner;
         }
@@ -165,18 +161,11 @@ namespace Trivia
             Console.WriteLine("Question was incorrectly answered");
 
             PutCurrentPlayerInPenaltyBox();
-            Console.WriteLine(_players[_currentPlayer] + " was sent to the penalty box");
+            Console.WriteLine(_players[_currentPlayer].Name + " was sent to the penalty box");
 
             _currentPlayer = _players.GetNextPlayer();
 
-            ResetPlayerIfLast();
-
             return true;
-        }
-
-        private void ResetPlayerIfLast()
-        {
-            if (_currentPlayer == _players.Count) _currentPlayer = 0;
         }
 
         private void PutCurrentPlayerInPenaltyBox()

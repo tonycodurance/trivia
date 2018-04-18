@@ -2,11 +2,11 @@
 {
     public class Player
     {
-        private readonly string _playerName;
+        public readonly string Name;
 
-        public Player(string playerName)
+        public Player(string name)
         {
-            _playerName = playerName;
+            Name = name;
             Coins = 0;
         }
 

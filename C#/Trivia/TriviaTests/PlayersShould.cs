@@ -7,6 +7,24 @@ namespace TriviaTests
     [TestFixture]
     public class PlayersShould
     {
+        private Players _players;
+        private Player _firstPlayer;
+        private Player _secondPlayer;
+        private Player _thirdPlayer;
+        
+        [SetUp]
+        public void Init()
+        {
+            _players = new Players();
+            
+            var firstPlayerName = Guid.NewGuid().ToString();
+            var secondPlayerName = Guid.NewGuid().ToString();
+            var thirdPlayerName = Guid.NewGuid().ToString();
+            _firstPlayer = new Player(firstPlayerName);
+            _secondPlayer = new Player(secondPlayerName);
+            _thirdPlayer = new Player(thirdPlayerName);
+        }
+
         [Test]
         public void Have_no_players()
         {
@@ -17,73 +35,58 @@ namespace TriviaTests
         [Test]
         public void Add_a_player()
         {
-            var player = Guid.NewGuid().ToString();
-            var players = new Players();
-
-            players.Add(player);
+           _players.Add(_firstPlayer);
             
-            Assert.That(players.Count, Is.EqualTo(1));
-            Assert.That(players[0], Is.EqualTo(player));
+            Assert.That(_players.Count, Is.EqualTo(1));
+            Assert.That(_players[0], Is.EqualTo(_firstPlayer));
         }
-        
+
         [Test]
         public void Add_many_players()
         {
-            var firstPlayer = Guid.NewGuid().ToString();
-            var secondPlayer = Guid.NewGuid().ToString();
-            var thirdPlayer = Guid.NewGuid().ToString();
+            _players.Add(_firstPlayer);
+            _players.Add(_secondPlayer);
+            _players.Add(_thirdPlayer);
             
-            var players = new Players();
-
-            players.Add(firstPlayer);
-            players.Add(secondPlayer);
-            players.Add(thirdPlayer);
-            
-            Assert.That(players.Count, Is.EqualTo(3));
-            Assert.That(players[0], Is.EqualTo(firstPlayer));
-            Assert.That(players[1], Is.EqualTo(secondPlayer));
-            Assert.That(players[2], Is.EqualTo(thirdPlayer));
+            Assert.That(_players.Count, Is.EqualTo(3));
+            Assert.That(_players[0], Is.EqualTo(_firstPlayer));
+            Assert.That(_players[1], Is.EqualTo(_secondPlayer));
+            Assert.That(_players[2], Is.EqualTo(_thirdPlayer));
         }
-        
+
         [Test]
         public void Set_current_player_to_first_player()
         {
-            var firstPlayer = Guid.NewGuid().ToString();
-            var secondPlayer = Guid.NewGuid().ToString();
-            var players = new Players();
-            players.Add(firstPlayer);
-            players.Add(secondPlayer);
+            _players.Add(_firstPlayer);
+            _players.Add(_secondPlayer);
             
-            Assert.That(players.CurrentPlayerIndex, Is.EqualTo(0));
+            Assert.That(_players.CurrentPlayerIndex, Is.EqualTo(0));
         }
         
         [Test]
-        public void Advance_current_player_to_second_player()
+        public void GetNextPlayer()
         {
-            var firstPlayer = Guid.NewGuid().ToString();
-            var secondPlayer = Guid.NewGuid().ToString();
-            var players = new Players();
-            players.Add(firstPlayer);
-            players.Add(secondPlayer);
+            _players.Add(_firstPlayer);
+            _players.Add(_secondPlayer);
 
-            players.GetNextPlayer();
+            var actualPlayer = _players.GetNextPlayer();
             
-            Assert.That(players.CurrentPlayerIndex, Is.EqualTo(1));
+            Assert.That(actualPlayer, Is.EqualTo(1));
+            Assert.That(_players.CurrentPlayerIndex, Is.EqualTo(1));
         }
         
         [Test]
-        public void Advance_current_player_back_to_first_player()
+        public void GetNextPlayerWhenReachingTheEndOfPlayersList()
         {
-            var firstPlayer = Guid.NewGuid().ToString();
-            var secondPlayer = Guid.NewGuid().ToString();
-            var players = new Players();
-            players.Add(firstPlayer);
-            players.Add(secondPlayer);
-            players.GetNextPlayer();
+            _players.Add(_firstPlayer);
+            _players.Add(_secondPlayer);
             
-            players.GetNextPlayer();
+            _players.GetNextPlayer();
             
-            Assert.That(players.CurrentPlayerIndex, Is.EqualTo(0));
+            var actualPlayerIndex = _players.GetNextPlayer();
+            
+            Assert.That(actualPlayerIndex, Is.EqualTo(0));
+            Assert.That(_players.CurrentPlayerIndex, Is.EqualTo(0));
         }
     }
 }
