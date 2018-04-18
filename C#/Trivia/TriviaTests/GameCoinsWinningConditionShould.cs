@@ -6,17 +6,13 @@ namespace TriviaTests
     [TestFixture]
     public class GameCoinsWinningConditionShould
     {
-        [TestCase(6, true)]
-        [TestCase(5, false)]
-        [TestCase(1, false)]
-        public void IdentifyWinningCondition(int numberOfPlayerCoins, bool expectedPlayerIsWinner)
+        [TestCase(7, 6, false)]
+        [TestCase(6, 6, true)]
+        [TestCase(5, 5, true)]
+        [TestCase(1, 2, false)]
+        public void IdentifyWinningCondition(int numberOfPlayerCoins, int numberOfCoinsToWin, bool expectedPlayerIsWinner)
         {
-            var gameConditions = new GameCoinsWinningCondition();
-//            var player = new Player();
-//            for (var i = 0; i < numberOfCorrectAnswers; i++)
-//            {
-//                player.AddCoin();
-//            }
+            var gameConditions = new GameCoinsWinningCondition(numberOfCoinsToWin);
 
             var actualPlayerIsWinner = gameConditions.CurrentPlayerWinner(numberOfPlayerCoins);
 

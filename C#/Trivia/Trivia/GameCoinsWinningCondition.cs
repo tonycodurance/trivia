@@ -1,19 +1,17 @@
-﻿using static Trivia.WinningConditions;
-
-namespace Trivia
+﻿namespace Trivia
 {
     public class GameCoinsWinningCondition
     {
-        private WinningConditions _numberOfCoinsToWin = WinningCoins;
+        private readonly int _numberOfCoinsToWinGame;
+
+        public GameCoinsWinningCondition(int numberOfCoinsToWinGame)
+        {
+            _numberOfCoinsToWinGame = numberOfCoinsToWinGame;
+        }
 
         public bool CurrentPlayerWinner(int playerCoins)
         {
-            return playerCoins == (int)_numberOfCoinsToWin;
+            return playerCoins == _numberOfCoinsToWinGame;
         }
-    }
-    
-    public enum WinningConditions
-    {
-        WinningCoins = 6
     }
 }

@@ -14,7 +14,7 @@ namespace Trivia
         private int _currentPlayer = 0;
         private bool _isGettingOutOfPenaltyBox;
         private readonly GameQuestions _gameQuestions = new GameQuestions();
-        private readonly GameCoinsWinningCondition _gameWinningCondition = new GameCoinsWinningCondition();
+        private readonly GameCoinsWinningCondition _gameWinningCondition = new GameCoinsWinningCondition(6);
 
         public static Category GiveCategoryFor(Location playerLocation)
         {
