@@ -99,7 +99,7 @@ namespace Trivia
                     
                     Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
-                    var currentPlayerNoWinner = !CurrentPlayerWinner();
+                    var currentPlayerNoWinner = !CurrentPlayerWinner(6);
                     
                     SetNextPlayer();
                     
@@ -118,7 +118,7 @@ namespace Trivia
             GiveCoinToCurrentPlayer();
             Console.WriteLine(_players[_currentPlayer] + " now has " + _purses[_currentPlayer] + " Gold Coins.");
 
-            var currentPlayerIsNoWinner = !CurrentPlayerWinner();
+            var currentPlayerIsNoWinner = !CurrentPlayerWinner(6);
                 
             SetNextPlayer();
                 
@@ -187,9 +187,9 @@ namespace Trivia
             _currentPlayer++;
         }
 
-        public bool CurrentPlayerWinner()
+        public bool CurrentPlayerWinner(int numberOfCoinsToWin)
         {
-            return GetCurrentPlayerCoins() == 6;
+            return GetCurrentPlayerCoins() == numberOfCoinsToWin;
         }
 
         public virtual int GetCurrentPlayerCoins()
