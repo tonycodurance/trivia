@@ -8,17 +8,11 @@ namespace Trivia
     public class Game
     {
         private readonly Players _players = new Players();
-
         private readonly int[] _location = new int[6];
-
         private readonly int[] _purses = new int[6];
-
         private readonly bool[] _inPenaltyBox = new bool[6];
-
         private int _currentPlayer = 0;
-
         private bool _isGettingOutOfPenaltyBox;
-
         private readonly GameQuestions _gameQuestions = new GameQuestions();
 
         public static Category GiveCategoryFor(Location playerLocation)
